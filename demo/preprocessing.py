@@ -7,7 +7,7 @@ def stop_words():
     停用词
     :return:stop_words
     """
-    with open("stopwords/stop_words") as fr:
+    with open("stopwords/stop_words","r", encoding="utf-8") as fr:
         stop_words = set([word.strip() for word in fr])
 
     return stop_words
@@ -24,4 +24,4 @@ if __name__ == '__main__':
     df["comment"] = df["comment"].map(lambda x: " ".join([i for i in jb.cut(x) if i not in stop_words]))
 
     # 保存文件，成新的训练集
-    df.to_csv("./o2ocomment.csv", index=False, header=False, columns=["label", "comment"])
+    df.to_csv("data/new_train.csv", index=False, header=False, columns=["label", "comment"])
