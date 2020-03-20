@@ -7,10 +7,10 @@ def stop_words():
     停用词
     :return:stop_words
     """
-    with open("stopwords/stop_words","r", encoding="utf-8") as fr:
-        stop_words = set([word.strip() for word in fr])
+    with open("stopwords/stop_words", "r", encoding="utf-8") as fr:
+        stopwords = set([word.strip() for word in fr])
 
-    return stop_words
+    return stopwords
 
 
 if __name__ == '__main__':

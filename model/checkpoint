@@ -1,0 +1,2 @@
+model_checkpoint_path: "o2o_model"
+all_model_checkpoint_paths: "o2o_model"
