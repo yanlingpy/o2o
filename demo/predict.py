@@ -18,9 +18,9 @@ if __name__ == '__main__':
 
         print(res)
 
-        # if res == 0:
-        #     print("无关")
-        # else:
-        #     print("有关")
+        if res <0.2:
+            print("无关")
+        else:
+            print("有关")
 
         print()

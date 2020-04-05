@@ -19,14 +19,17 @@ def build_embeddings_matrix(word_vec_model):
         # 预留０行给查不到的词
         embeddings_matrix[index+1] = word_vec_model.get_vector(word)
 
+
     return word_index, embeddings_matrix
 
 def build_model(word_index, embeddings_matrix):
     # 建立模型
     model = keras.Sequential()
     model.add(keras.layers.Embedding(input_dim=len(word_index)+1, output_dim=128, weights=[embeddings_matrix],input_length=20, trainable=False))
-    model.add(keras.layers.LSTM(128,dropout=0.5))
-    # model.add(keras.layers.Dense(32, activation="relu"))
+    model.add(keras.layers.Bidirectional(keras.layers.LSTM(100, dropout=0.1,recurrent_dropout=0.5, return_sequences=True)))
+    model.add(keras.layers.Bidirectional(keras.layers.LSTM(50,dropout=0.1,recurrent_dropout=0.5)))
+    # model.add(keras.layers.GlobalAveragePooling1D())
+    model.add(keras.layers.Dense(32,activation="relu"))
     model.add(keras.layers.Dense(1, activation="sigmoid"))
     model.compile(optimizer="rmsprop", loss = 'binary_crossentropy', metrics=["accuracy"])
     model.summary()
@@ -51,6 +54,7 @@ if __name__ == '__main__':
 
     # 建立词索引
     word_index, embeddings_matrix = build_embeddings_matrix(word_vec_model)
+
 
     # 生成训练集，测试集，验证集
     x_train, x_val, x_test, y_train, y_val, y_test = train_data(word_index)
