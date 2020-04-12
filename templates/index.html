@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"/>
+</head>
+
+<style>
+
+</style>
+<body>
+    {% from "_formhelpers.html" import render_field %}
+     <h1>O2O食品安全相关评论分析</h1>
+    <hr />
+    <div class="con clearfix">
+            <form method="post" action="/main">
+                <label for="comment">你的评论：</label>
+{#                <textarea id="pinglun" name="pinglun" >#}
+{#                {{ render_field(form.review) }}#}
+{#            </textarea> <br />#}
+                <dl>
+                {{ render_field(form.review) }}
+                </dl>
+
+                <input type="submit" value="提交评论" name="submit_btn">
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-link">
+        Copyright © 2020 <a href="http://cs.imnu.edu.cn/">内蒙古师范大学-计算机科学技术学院</a>
+            - author: 李鹏
+    </div>
+</body>
+</html>
