@@ -29,7 +29,7 @@ def build_model(word_index, embeddings_matrix):
     model.add(keras.layers.Bidirectional(keras.layers.LSTM(100, dropout=0.1,recurrent_dropout=0.5, return_sequences=True)))
     model.add(keras.layers.Bidirectional(keras.layers.LSTM(50,dropout=0.1,recurrent_dropout=0.5)))
     # model.add(keras.layers.GlobalAveragePooling1D())
-    model.add(keras.layers.Dense(32,activation="relu"))
+    # model.add(keras.layers.Dense(32,activation="relu"))
     model.add(keras.layers.Dense(1, activation="sigmoid"))
     model.compile(optimizer="rmsprop", loss = 'binary_crossentropy', metrics=["accuracy"])
     model.summary()
