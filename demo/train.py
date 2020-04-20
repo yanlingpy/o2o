@@ -25,8 +25,8 @@ def build_embeddings_matrix(word_vec_model):
 def build_model(word_index, embeddings_matrix):
     # 建立模型
     model = keras.Sequential()
-    model.add(keras.layers.Embedding(input_dim=len(word_index)+1, output_dim=128, weights=[embeddings_matrix],input_length=20, trainable=False))
-    model.add(keras.layers.Bidirectional(keras.layers.LSTM(100, dropout=0.1,recurrent_dropout=0.5, return_sequences=True)))
+    model.add(keras.layers.Embedding(input_dim=len(word_index)+1, output_dim=128, weights=[embeddings_matrix],input_length=20, trainable=False))  # 嵌入层
+    model.add(keras.layers.Bidirectional(keras.layers.LSTM(100, dropout=0.1,recurrent_dropout=0.5, return_sequences=True)))  # ｌｓｔｍ层
     model.add(keras.layers.Bidirectional(keras.layers.LSTM(50,dropout=0.1,recurrent_dropout=0.5)))
     # model.add(keras.layers.GlobalAveragePooling1D())
     # model.add(keras.layers.Dense(32,activation="relu"))
