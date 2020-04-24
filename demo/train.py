@@ -1,10 +1,24 @@
 import gensim
 import numpy as np
 import pandas as pd
+import keras.backend as K
 
 from collections  import defaultdict
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
+
+
+def f1_score(y_true, y_pred):
+ c1 = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+ c2 = K.sum(K.round(K.clip(y_pred, 0, 1)))
+ c3 = K.sum(K.round(K.clip(y_true, 0, 1)))
+ # if c3 == 0:
+ #    return 0
+ precision = c1/(c2+K.epsilon())
+ recall = c1/(c3+K.epsilon())
+ f1_score = 2 * (precision * recall)/(precision + recall+K.epsilon())
+ return f1_score
+
 
 def build_embeddings_matrix(word_vec_model):
     # 初始化词向量矩阵
@@ -25,13 +39,14 @@ def build_embeddings_matrix(word_vec_model):
 def build_model(word_index, embeddings_matrix):
     # 建立模型
     model = keras.Sequential()
-    model.add(keras.layers.Embedding(input_dim=len(word_index)+1, output_dim=128, weights=[embeddings_matrix],input_length=20, trainable=False))  # 嵌入层
-    model.add(keras.layers.Bidirectional(keras.layers.LSTM(100, dropout=0.1,recurrent_dropout=0.5, return_sequences=True)))  # ｌｓｔｍ层
+    model.add(keras.layers.Embedding(input_dim=len(word_index)+1, output_dim=128, weights=[embeddings_matrix],input_length=20, trainable=False))
+    model.add(keras.layers.Bidirectional(keras.layers.LSTM(100, dropout=0.1,recurrent_dropout=0.5, return_sequences=True)))
     model.add(keras.layers.Bidirectional(keras.layers.LSTM(50,dropout=0.1,recurrent_dropout=0.5)))
     # model.add(keras.layers.GlobalAveragePooling1D())
     # model.add(keras.layers.Dense(32,activation="relu"))
     model.add(keras.layers.Dense(1, activation="sigmoid"))
-    model.compile(optimizer="rmsprop", loss = 'binary_crossentropy', metrics=["accuracy"])
+    model.compile(optimizer="rmsprop", loss = 'binary_crossentropy', metrics=["accuracy", f1_score])
+    print(model.metrics_names)
     model.summary()
     return model
 
@@ -49,6 +64,7 @@ def train_data(word_index):
 
 
 if __name__ == '__main__':
+    # metrics= Metrics()
     # 加载词向量
     word_vec_model = gensim.models.KeyedVectors.load_word2vec_format("data/word_vec.txt", binary=False)
 
@@ -61,9 +77,9 @@ if __name__ == '__main__':
     # 建立模型
     model = build_model(word_index, embeddings_matrix)
     # 训练
-    model.fit(x_train, y_train, epochs=50, validation_data=(x_val, y_val))
+    model.fit(x_train, y_train, epochs=70, validation_data=(x_val, y_val))
     # 评估
     ret = model.evaluate(x_test, y_test)
-    print(f"损失: {ret[0]}, 准确率: {ret[1]}")
+    print(f"损失: {ret[0]}, 准确率: {ret[1]},f1值:{ret[2]}")
     # 保存模型
     model.save_weights("model/o2o_model")

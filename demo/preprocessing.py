@@ -7,7 +7,7 @@ def stop_words():
     停用词
     :return:stop_words
     """
-    with open("stopwords/stop_words", "r", encoding="utf-8") as fr:
+    with open("data/stop_words.txt", "r", encoding="utf-8") as fr:
         stopwords = set([word.strip() for word in fr])
 
     return stopwords
