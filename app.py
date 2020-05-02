@@ -54,6 +54,7 @@ def main():
 
 
 class ReviewForm(Form):
+    # 表单验证
     review = TextAreaField("",[validators.DataRequired()])
 
 
