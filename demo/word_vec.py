@@ -2,6 +2,7 @@ import pandas as pd
 import gensim
 
 if __name__ == '__main__':
+    # 词向量
     df = pd.read_csv("data/new_train.csv", header=None)
 
     sentences = df.iloc[:, 1].astype("str").map(lambda x: x.split(" "))
