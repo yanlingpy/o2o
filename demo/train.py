@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 
 
 def f1_score(y_true, y_pred):
+ # 模型评估
  c1 = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
  c2 = K.sum(K.round(K.clip(y_pred, 0, 1)))
  c3 = K.sum(K.round(K.clip(y_true, 0, 1)))
